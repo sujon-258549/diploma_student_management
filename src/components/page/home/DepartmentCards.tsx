@@ -129,8 +129,8 @@ const DepartmentCards = () => {
     <section className="py-16 ">
       <div className="">
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
-            Departments of Rangpur Polytechnic Institute
+          <h2 className="text-3xl sm:text-6xl font-extrabold text-cyan-400 mb-4">
+            Departments of Rangpur Polytechnic
           </h2>
           <p className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto">
             Explore our diverse range of technical departments offering cutting-edge education
@@ -141,6 +141,7 @@ const DepartmentCards = () => {
           <Marquee 
             speed={40}
             gradient={true}
+            // @ts-expect-error
             gradientColor={[17, 24, 39]}
             gradientWidth={80}
             pauseOnHover={true}
