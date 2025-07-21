@@ -1,5 +1,5 @@
-import { Book, Menu, Sunset, Trees, Zap } from "lucide-react";
-
+import { Book, LogInIcon, Menu, Sunset, Trees, Zap } from "lucide-react";
+import './nav.css'
 import {
   Accordion,
   AccordionContent,
@@ -36,7 +36,7 @@ interface Navbar1Props {
     url: string;
     src: string;
     alt: string;
-    title: string;
+   
   };
   menu?: MenuItem[];
   auth?: {
@@ -54,9 +54,8 @@ interface Navbar1Props {
 const Navbar1 = ({
   logo = {
     url: "https://www.shadcnblocks.com",
-    src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg",
+    src: "/logo.png",
     alt: "logo",
-    title: "Shadcnblocks.com",
   },
   menu = [
     { title: "Home", url: "#" },
@@ -136,19 +135,19 @@ const Navbar1 = ({
   },
 }: Navbar1Props) => {
   return (
-    <section className="py-4">
-      <div className="container">
+    <section className="py-4 bg-cyan-950">
+      <div className="container mx-auto px-4">
         {/* Desktop Menu */}
         <nav className="hidden justify-between lg:flex">
           <div className="flex items-center gap-6">
             {/* Logo */}
             <a href={logo.url} className="flex items-center gap-2">
-              <img src={logo.src} className="max-h-8" alt={logo.alt} />
-              <span className="text-lg font-semibold tracking-tighter">
-                {logo.title}
+              <img src={logo.src} className="max-h-12" alt={logo.alt} />
+              <span className="text-xl font-semibold tracking-tighter text-white">
+               
               </span>
             </a>
-            <div className="flex items-center">
+            <div className="flex items-center nav">
               <NavigationMenu>
                 <NavigationMenuList>
                   {menu.map((item) => renderMenuItem(item))}
@@ -157,19 +156,16 @@ const Navbar1 = ({
             </div>
           </div>
           <div className="flex gap-2">
-            <Button asChild variant="outline" size="sm">
-              <a href={auth.login.url}>{auth.login.title}</a>
+            <Button asChild variant="outline" className="mt-1 bg-cyan-600 text-white" size="lg">
+               <a className="flex justify-center items-center" href={auth.login.url}>{auth.login.title} <span><LogInIcon/></span></a>
             </Button>
-            <Button asChild size="sm">
-              <a href={auth.signup.url}>{auth.signup.title}</a>
-            </Button>
+        
           </div>
         </nav>
 
         {/* Mobile Menu */}
         <div className="block lg:hidden">
           <div className="flex items-center justify-between">
-            {/* Logo */}
             <a href={logo.url} className="flex items-center gap-2">
               <img src={logo.src} className="max-h-8" alt={logo.alt} />
             </a>
@@ -218,8 +214,10 @@ const renderMenuItem = (item: MenuItem) => {
   if (item.items) {
     return (
       <NavigationMenuItem key={item.title}>
-        <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>
-        <NavigationMenuContent className="bg-popover text-popover-foreground">
+        <NavigationMenuTrigger className="text-white border-2 border-red-50 bg-cyan-600 ">
+          {item.title}
+        </NavigationMenuTrigger>
+        <NavigationMenuContent className="border-2 border-red-50 bg-cyan-600">
           {item.items.map((subItem) => (
             <NavigationMenuLink asChild key={subItem.title} className="w-80">
               <SubMenuLink item={subItem} />
@@ -234,7 +232,7 @@ const renderMenuItem = (item: MenuItem) => {
     <NavigationMenuItem key={item.title}>
       <NavigationMenuLink
         href={item.url}
-        className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground"
+        className="group inline-flex h-10 w-max items-center justify-center rounded-md  text-white px-4 py-2 text-sm font-medium transition-colors border-2 border-red-50 bg-cyan-600"
       >
         {item.title}
       </NavigationMenuLink>
@@ -268,14 +266,14 @@ const renderMobileMenuItem = (item: MenuItem) => {
 const SubMenuLink = ({ item }: { item: MenuItem }) => {
   return (
     <a
-      className="flex flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground"
+      className="flex flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-blue-100 hover:text-blue-800"
       href={item.url}
     >
-      <div className="text-foreground">{item.icon}</div>
+      <div className="text-black">{item.icon}</div>
       <div>
         <div className="text-sm font-semibold">{item.title}</div>
         {item.description && (
-          <p className="text-sm leading-snug text-muted-foreground">
+          <p className="text-sm leading-snug text-gray-500">
             {item.description}
           </p>
         )}
