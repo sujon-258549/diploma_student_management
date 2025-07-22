@@ -121,7 +121,7 @@ const Navbar1 = ({
       ],
     },
     {
-      title: "Pricing",
+      title: "Notice",
       url: "#",
     },
     {
