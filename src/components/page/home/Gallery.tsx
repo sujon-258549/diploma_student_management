@@ -16,7 +16,7 @@ const departments: TDepartment[] = [
   { id: "ELT", name: "Electronics", icon: <FaMicrochip size={50} /> },
   { id: "CT", name: "Civil", icon: <FaBuilding size={50} /> },
   { id: "MT", name: "Mechanical", icon: <FaCogs size={50} /> },
-  { id: "PT", name: "Power", icon: <FaPlug size={20} /> },
+  { id: "PT", name: "Power", icon: <FaPlug size={50} /> },
   { id: "EMT", name: "Electromedical", icon: <FaHeartbeat size={50} /> },
 ];
 
@@ -46,7 +46,7 @@ const Gallery = () => {
   console.log(images)
   useEffect(() => {
     const matchedDepartment = AllDepartmentData.find(d => d.name === category);
-    setImages(matchedDepartment?.image)
+    setImages(matchedDepartment?.image || [])
     // fallback empty array
   }, [category]);
 
@@ -66,13 +66,14 @@ const Gallery = () => {
       {/* Tabs Section */}
       <Tabs defaultValue={category} className="">
         {/* Tab Buttons */}
-        <TabsList className="py-7 px-2 mx-auto">
+        <TabsList className="pb-16 md:pb-28 pt-5 px-12 lg:pb-12 lg:pt-1.5 lg:px-2 flex gap-3  flex-wrap overflow-y-auto md:overflow-y-hidden  mx-auto overflow-x-auto scrollbar-hide max-w-full">
+          {/* <TabsList className="flex flex-wrap md:flex-nowrap gap-2 py-4 px-2 mx-auto overflow-x-auto scrollbar-hide max-w-full"></TabsList> */}
           {departments.map((department) => (
             <TabsTrigger
               key={department.id}
               value={department.id}
               onClick={() => setCategory(department.id)}
-              className="data-[state=active]:text-white data-[state=active]:bg-cyan-500 py-5 px-4"
+              className="text-white bg-cyan-900  data-[state=active]:bg-cyan-500 py-5 px-4"
             >
               {department.name}
             </TabsTrigger>
@@ -91,7 +92,23 @@ const Gallery = () => {
                 {
                   images?.length > 0 ? (
                     images.map((image, index) => (
-                      <img className='w-full h-[250px] object-cover rounded-md ' style={{ boxShadow: '1px 1px 10px' }} key={index} src={image.image} alt="" />
+                      <div className="relative group h-[250px] w-full rounded-md overflow-hidden shadow-lg" key={index}>
+                        {/* Image */}
+                        <img
+                          src={image.image}
+                          alt=""
+                          className="w-full h-full object-cover"
+                        />
+
+                        {/* Overlay (optional) */}
+                        <div className="absolute inset-0 bg-black/10 group-hover:bg-black/40 transition duration-300"></div>
+
+                        {/* Watermark Text */}
+                        <p className="absolute bottom-2 right-2 text-white text-xs opacity-60 z-10 select-none">
+                         {image.type}
+                        </p>
+                      </div>
+
                     ))
                   ) : (
                     <div className="col-span-full flex flex-col items-center justify-center p-10 bg-gray-800 rounded-md shadow-md text-gray-400">

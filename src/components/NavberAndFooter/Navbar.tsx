@@ -165,8 +165,8 @@ const Navbar1 = ({
 
         {/* Mobile Menu */}
         <div className="block lg:hidden">
-          <div className="flex items-center justify-between">
-            <a href={logo.url} className="flex items-center gap-2">
+          <div className="flex items-center justify-between text-white">
+            <a href={logo.url} className="flex text-white items-center gap-2">
               <img src={logo.src} className="max-h-8" alt={logo.alt} />
             </a>
             <Sheet>
@@ -178,7 +178,7 @@ const Navbar1 = ({
               <SheetContent className="overflow-y-auto">
                 <SheetHeader>
                   <SheetTitle>
-                    <a href={logo.url} className="flex items-center gap-2">
+                    <a href={logo.url} className="flex text-white items-center gap-2">
                       <img src={logo.src} className="max-h-8" alt={logo.alt} />
                     </a>
                   </SheetTitle>
@@ -194,10 +194,10 @@ const Navbar1 = ({
 
                   <div className="flex flex-col gap-3">
                     <Button asChild variant="outline">
-                      <a href={auth.login.url}>{auth.login.title}</a>
+                      <a className="text-white" href={auth.login.url}>{auth.login.title}</a>
                     </Button>
                     <Button asChild>
-                      <a href={auth.signup.url}>{auth.signup.title}</a>
+                      <a  className="text-white" href={auth.signup.url}>{auth.signup.title}</a>
                     </Button>
                   </div>
                 </div>
@@ -244,10 +244,10 @@ const renderMobileMenuItem = (item: MenuItem) => {
   if (item.items) {
     return (
       <AccordionItem key={item.title} value={item.title} className="border-b-0">
-        <AccordionTrigger className="text-md py-0 font-semibold hover:no-underline">
+        <AccordionTrigger className="text-md py-0 text-white font-semibold hover:no-underline">
           {item.title}
         </AccordionTrigger>
-        <AccordionContent className="mt-2">
+        <AccordionContent className="mt-2 text-white">
           {item.items.map((subItem) => (
             <SubMenuLink key={subItem.title} item={subItem} />
           ))}
@@ -257,7 +257,7 @@ const renderMobileMenuItem = (item: MenuItem) => {
   }
 
   return (
-    <a key={item.title} href={item.url} className="text-md font-semibold">
+    <a key={item.title} href={item.url} className="text-md text-white font-semibold">
       {item.title}
     </a>
   );
@@ -266,10 +266,10 @@ const renderMobileMenuItem = (item: MenuItem) => {
 const SubMenuLink = ({ item }: { item: MenuItem }) => {
   return (
     <a
-      className="flex flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-blue-100 hover:text-blue-800"
+      className="flex flex-row gap-4 text-white rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-blue-100 hover:text-blue-800"
       href={item.url}
     >
-      <div className="text-black">{item.icon}</div>
+      <div className="text-white">{item.icon}</div>
       <div>
         <div className="text-sm font-semibold">{item.title}</div>
         {item.description && (
