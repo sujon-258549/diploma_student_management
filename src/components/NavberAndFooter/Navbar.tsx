@@ -1,13 +1,14 @@
 "use client";
+import { Book, Zap, Cpu, Wrench, Bolt, SatelliteDish, Building2 } from "lucide-react";
 
 import { usePathname } from "next/navigation";
 import {
-  Book,
+
   LogInIcon,
   Menu,
   Sunset,
   Trees,
-  Zap,
+
 } from "lucide-react";
 import './nav.css'
 import {
@@ -69,20 +70,50 @@ const Navbar1 = ({
   menu = [
     { title: "Home", url: "/" },
     {
-      title: "Education",
-      url: "#",
+      title: "About us",
+      url: "/about",
       items: [
         {
-          title: "Computer",
-          description: "All about computer education",
-          icon: <Book className="size-5 shrink-0" />,
-          url: "/education/computer",
+          title: "Civil Technology",
+          description: "টেকনোলজি পরিচিতি",
+          icon: <Building2 className="size-5 shrink-0" />,
+          url: "/civil/overview",
         },
         {
-          title: "Electrical",
-          description: "Explore electrical technologies",
+          title: "Electrical Technology",
+          description: "টেকনোলজি পরিচিতি",
           icon: <Zap className="size-5 shrink-0" />,
-          url: "/education/electrical",
+          url: "/electrical/overview",
+        },
+        {
+          title: "Mechanical Technology",
+          description: "টেকনোলজি পরিচিতি",
+          icon: <Wrench className="size-5 shrink-0" />,
+          url: "/mechanical/overview",
+        },
+        {
+          title: "Power Technology",
+          description: "টেকনোলজি পরিচিতি",
+          icon: <Bolt className="size-5 shrink-0" />,
+          url: "/power/overview",
+        },
+        {
+          title: "Computer Science & Technology",
+          description: "টেকনোলজি পরিচিতি",
+          icon: <Book className="size-5 shrink-0" />,
+          url: "/about/computer",
+        },
+        {
+          title: "Electromedical Technology",
+          description: "টেকনোলজি পরিচিতি",
+          icon: <SatelliteDish className="size-5 shrink-0" />,
+          url: "/electromedical/overview",
+        },
+        {
+          title: "Electronics Technology",
+          description: "টেকনোলজি পরিচিতি",
+          icon: <Cpu className="size-5 shrink-0" />,
+          url: "/electronics/overview",
         },
       ],
     },
@@ -193,11 +224,10 @@ const renderMenuItem = (item: MenuItem, pathname: string) => {
     <NavigationMenuItem key={item.title}>
       <NavigationMenuLink
         href={item.url}
-        className={`group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors border-2 ${
-          isActive
-            ? "bg-white text-cyan-900 border-yellow-400"
-            : "bg-cyan-600 text-white border-white"
-        }`}
+        className={`group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors border-2 ${isActive
+          ? "bg-white text-cyan-900 border-yellow-400"
+          : "bg-cyan-600 text-white border-white"
+          }`}
       >
         {item.title}
       </NavigationMenuLink>
@@ -228,9 +258,8 @@ const renderMobileMenuItem = (item: MenuItem, pathname: string) => {
     <a
       key={item.title}
       href={item.url}
-      className={`text-md font-semibold ${
-        isActive ? "text-yellow-400" : "text-white"
-      }`}
+      className={`text-md font-semibold ${isActive ? "text-yellow-400" : "text-white"
+        }`}
     >
       {item.title}
     </a>
@@ -242,18 +271,19 @@ const SubMenuLink = ({ item, active = false }: { item: MenuItem; active?: boolea
   return (
     <a
       href={item.url}
-      className={`flex flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors select-none ${
-        active
-          ? "bg-yellow-100 text-cyan-900"
-          : "text-white hover:bg-blue-100 hover:text-blue-800"
-      }`}
+      className={`flex flex-row rounded-md px-3 mb-1 pb-3 leading-none no-underline transition-colors select-none ${active
+        ? "bg-black text-white"
+        : "text-white hover:bg-cyan-800 bg-cyan-950 hover:text-white"
+        }`}
     >
-      <div>{item.icon}</div>
-      <div>
-        <div className="text-sm font-semibold">{item.title}</div>
-        {item.description && (
-          <p className="text-sm leading-snug text-gray-300">{item.description}</p>
-        )}
+      <div className="flex items-center justify-center gap-1">
+        <div>{item.icon}</div>
+        <div className="w-96">
+          <div className="text-sm font-semibold  mt-4">{item.title}</div>
+          {item.description && (
+            <p className="text-sm leading-snug text-gray-300">{item.description}</p>
+          )}
+        </div>
       </div>
     </a>
   );
