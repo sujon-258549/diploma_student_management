@@ -395,7 +395,7 @@ const ComputerPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Department Header */}
-      <div className="bg-gradient-to-r from-blue-800 to-blue-600 text-white py-12">
+      <div className="bg-gradient-to-r from-cyan-800 to-cyan-600 text-white py-12">
         <div className="container mx-auto px-4 text-center">
           <div className="flex justify-center mb-4">
             <Laptop className="size-12" />
@@ -413,7 +413,7 @@ const ComputerPage = () => {
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
           <div className="p-6">
             <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center">
-              <Building className="mr-2 size-6 text-blue-600" />
+              <Building className="mr-2 size-6 text-cyan-600" />
               About the Department
             </h2>
             
@@ -426,19 +426,19 @@ const ComputerPage = () => {
                 
                 <div className="space-y-3">
                   <div className="flex items-start">
-                    <Users className="flex-shrink-0 h-5 w-5 text-blue-600 mt-0.5 mr-2" />
+                    <Users className="flex-shrink-0 h-5 w-5 text-cyan-600 mt-0.5 mr-2" />
                     <span className="text-gray-700">
                       <strong>Department Head:</strong> {departmentInfo.head}
                     </span>
                   </div>
                   <div className="flex items-start">
-                    <GraduationCap className="flex-shrink-0 h-5 w-5 text-blue-600 mt-0.5 mr-2" />
+                    <GraduationCap className="flex-shrink-0 h-5 w-5 text-cyan-600 mt-0.5 mr-2" />
                     <span className="text-gray-700">
                       <strong>Program:</strong> 4-Year Diploma in Engineering
                     </span>
                   </div>
                   <div className="flex items-start">
-                    <Laptop className="flex-shrink-0 h-5 w-5 text-blue-600 mt-0.5 mr-2" />
+                    <Laptop className="flex-shrink-0 h-5 w-5 text-cyan-600 mt-0.5 mr-2" />
                     <span className="text-gray-700">
                       <strong>Laboratories:</strong> {departmentInfo.labs.join(", ")}
                     </span>
@@ -463,7 +463,7 @@ const ComputerPage = () => {
         <div className=" rounded-xl shadow-md overflow-hidden">
           <div className="p-6">
             <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-              <ClipboardList className="mr-2 size-6 text-blue-600" />
+              <ClipboardList className="mr-2 size-6 text-cyan-600" />
               Complete Curriculum Structure
             </h2>
             
@@ -472,7 +472,7 @@ const ComputerPage = () => {
               {semesters.map((sem, index) => (
                 <div key={index} className="border border-gray-200 rounded-lg">
                   {/* Semester Header */}
-                  <div className="bg-blue-700 text-white px-6 py-3 flex justify-between items-center">
+                  <div className="bg-cyan-700 text-white px-6 py-3 flex justify-between items-center">
                     <h3 className="text-lg font-bold">{sem.semester}</h3>
                     <div className="flex space-x-4">
                       <span className="text-sm">Total Period: {sem.totalPeriod}</span>
