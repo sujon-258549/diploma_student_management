@@ -33,6 +33,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import Link from "next/link";
+
 
 interface MenuItem {
   title: string;
@@ -126,10 +128,6 @@ const Navbar1 = ({
       url: "/post",
     },
   ],
-  auth = {
-    login: { title: "Login", url: "/login" },
-    signup: { title: "Sign up", url: "/signup" },
-  },
 }: Navbar1Props) => {
   const pathname = usePathname(); // 👈 Current route path
 
@@ -151,9 +149,7 @@ const Navbar1 = ({
             </div>
           </div>
           <div className="flex gap-2">
-            <Button asChild variant="outline" className="mt-1 bg-cyan-600 text-white" size="lg">
-              <a href={auth.login.url}>{auth.login.title} <LogInIcon className="ml-2 h-4 w-4" /></a>
-            </Button>
+            <Link href={'/login'}> <Button className="flex justify-center">Login <LogInIcon /></Button></Link>
           </div>
         </nav>
 
@@ -181,14 +177,6 @@ const Navbar1 = ({
                   <Accordion type="single" collapsible className="flex flex-col gap-4">
                     {menu.map((item) => renderMobileMenuItem(item, pathname))}
                   </Accordion>
-                  <div className="flex flex-col gap-3">
-                    <Button asChild variant="outline">
-                      <a className="text-white" href={auth.login.url}>{auth.login.title}</a>
-                    </Button>
-                    <Button asChild>
-                      <a className="text-white" href={auth.signup.url}>{auth.signup.title}</a>
-                    </Button>
-                  </div>
                 </div>
               </SheetContent>
             </Sheet>
