@@ -250,9 +250,9 @@ const RangpurPolytechnicAbout = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen ">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-800 to-blue-600 text-white py-16">
+      <div className="border-t border-white bg-gradient-to-r from-cyan-800 to-cyan-600 text-white py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">রংপুর পলিটেকনিক ইনস্টিটিউট</h1>
           <p className="text-xl md:text-2xl mb-8">বিস্তারিত প্রতিষ্ঠান পরিচিতি</p>
@@ -261,7 +261,7 @@ const RangpurPolytechnicAbout = () => {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Navigation Tabs */}
         <div className="mb-8 overflow-x-auto">
           <div className="flex space-x-2 pb-2">
