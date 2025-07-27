@@ -6,8 +6,6 @@ import {
 
   LogInIcon,
   Menu,
-  Sunset,
-  Trees,
 
 } from "lucide-react";
 import './nav.css'
@@ -70,64 +68,68 @@ const Navbar1 = ({
     alt: "logo",
   },
   menu = [
-    { title: "Home", url: "/" },
-    {
-      title: "About us",
-      url: "/about",
-      items: [
-        {
-          title: "Civil Technology",
-          description: "টেকনোলজি পরিচিতি",
-          icon: <Building2 className="size-5 shrink-0" />,
-          url: "/civil/overview",
-        },
-        {
-          title: "Electrical Technology",
-          description: "টেকনোলজি পরিচিতি",
-          icon: <Zap className="size-5 shrink-0" />,
-          url: "/electrical/overview",
-        },
-        {
-          title: "Mechanical Technology",
-          description: "টেকনোলজি পরিচিতি",
-          icon: <Wrench className="size-5 shrink-0" />,
-          url: "/mechanical/overview",
-        },
-        {
-          title: "Power Technology",
-          description: "টেকনোলজি পরিচিতি",
-          icon: <Bolt className="size-5 shrink-0" />,
-          url: "/power/overview",
-        },
-        {
-          title: "Computer Science & Technology",
-          description: "টেকনোলজি পরিচিতি",
-          icon: <Book className="size-5 shrink-0" />,
-          url: "/about/computer",
-        },
-        {
-          title: "Electromedical Technology",
-          description: "টেকনোলজি পরিচিতি",
-          icon: <SatelliteDish className="size-5 shrink-0" />,
-          url: "/electromedical/overview",
-        },
-        {
-          title: "Electronics Technology",
-          description: "টেকনোলজি পরিচিতি",
-          icon: <Cpu className="size-5 shrink-0" />,
-          url: "/electronics/overview",
-        },
-      ],
-    },
-    {
-      title: "Notice",
-      url: "/notice",
-    },
-    {
-      title: "Post",
-      url: "/post",
-    },
-  ],
+  { title: "হোম", url: "/" },
+  {
+    title: "আমাদের সম্পর্কে",
+    url: "/about",
+    items: [
+      {
+        title: "সিভিল টেকনোলজি",
+        description: "টেকনোলজি পরিচিতি",
+        icon: <Building2 className="size-5 shrink-0" />,
+        url: "/civil/overview",
+      },
+      {
+        title: "ইলেকট্রিক্যাল টেকনোলজি",
+        description: "টেকনোলজি পরিচিতি",
+        icon: <Zap className="size-5 shrink-0" />,
+        url: "/electrical/overview",
+      },
+      {
+        title: "মেকানিক্যাল টেকনোলজি",
+        description: "টেকনোলজি পরিচিতি",
+        icon: <Wrench className="size-5 shrink-0" />,
+        url: "/mechanical/overview",
+      },
+      {
+        title: "পাওয়ার টেকনোলজি",
+        description: "টেকনোলজি পরিচিতি",
+        icon: <Bolt className="size-5 shrink-0" />,
+        url: "/power/overview",
+      },
+      {
+        title: "কম্পিউটার সায়েন্স অ্যান্ড টেকনোলজি",
+        description: "টেকনোলজি পরিচিতি",
+        icon: <Book className="size-5 shrink-0" />,
+        url: "/about/computer",
+      },
+      {
+        title: "ইলেকট্রোমেডিকেল টেকনোলজি",
+        description: "টেকনোলজি পরিচিতি",
+        icon: <SatelliteDish className="size-5 shrink-0" />,
+        url: "/electromedical/overview",
+      },
+      {
+        title: "ইলেকট্রনিক্স টেকনোলজি",
+        description: "টেকনোলজি পরিচিতি",
+        icon: <Cpu className="size-5 shrink-0" />,
+        url: "/electronics/overview",
+      },
+    ],
+  },
+  {
+    title: "ইনস্টিটিউট পরিচিতি",
+    url: "/all_about", // যদি notice পেজ না হয়, এভাবে route name ঠিক করো
+  },
+  {
+    title: "নোটিশ",
+    url: "/notice",
+  },
+  {
+    title: "পোস্টসমূহ",
+    url: "/post",
+  },
+]
 }: Navbar1Props) => {
   const pathname = usePathname(); // 👈 Current route path
 
@@ -149,7 +151,7 @@ const Navbar1 = ({
             </div>
           </div>
           <div className="flex gap-2">
-            <Link href={'/login'}> <Button className="flex justify-center">Login <LogInIcon /></Button></Link>
+            <Link className="cursor-pointer" href={'/login'}> <Button className="flex cursor-pointer justify-center">Login <LogInIcon /></Button></Link>
           </div>
         </nav>
 
