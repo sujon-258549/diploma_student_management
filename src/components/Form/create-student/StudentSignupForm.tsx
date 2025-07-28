@@ -24,30 +24,20 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
 import { Textarea } from "@/components/ui/textarea"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Checkbox } from "@/components/ui/checkbox"
-import { CalendarIcon, User, Lock, Contact, Briefcase, FileText, Check } from "lucide-react"
+import { CalendarIcon, User, Lock, Contact, BookOpen, FileText, Check } from "lucide-react"
 import { useState } from "react"
-import Link from "next/link"
-import { signUFormSchema } from "./signup"
+import { studentSignUFormSchema } from "./studentSignupZod"
 
-
-
-export default function SignupForm() {
+export default function StudentSignupForm() {
   const [photoPreview, setPhotoPreview] = useState("")
-  const [signaturePreview, setSignaturePreview] = useState("")
-  const form = useForm<z.infer<typeof signUFormSchema>>({
-    resolver: zodResolver(signUFormSchema),
-    defaultValues: {
-      // role: "FACULTY",
-      // trainingCompleted: false,
-      // needPasswordChange: true,
-      // agreeToTerms: false,
-    },
+  const [photo, srtPhoto] = useState<any>()
+  const form = useForm<z.infer<typeof studentSignUFormSchema>>({
+    resolver: zodResolver(studentSignUFormSchema)
   })
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
+    srtPhoto(file)
     if (file) {
       const reader = new FileReader()
       reader.onloadend = () => {
@@ -58,32 +48,18 @@ export default function SignupForm() {
     }
   }
 
-  const [showPassword, setShowPassword] = useState<boolean>(false)
 
-
-  const handleSignatureUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setSignaturePreview(reader.result as string)
-        form.setValue("signatureUrl", reader.result as string)
-      }
-      reader.readAsDataURL(file)
-    }
-  }
-
-  async function onSubmit(values: z.infer<typeof signUFormSchema>) {
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof studentSignUFormSchema>) {
+    console.log(values, photo)
   }
 
   return (
     <div className="mx-4">
-      <div className="max-w-4xl mx-auto p-3 md:p-8  bg-gray-700 my-10 md:my-20 rounded-lg shadow-lg">
-        <div className="bg-cyan-600  text-white p-6 rounded-t-lg mb-6">
+      <div className="max-w-4xl mx-auto p-3 md:p-8 bg-gray-700 rounded-lg shadow-lg">
+        <div className="bg-cyan-600 text-white p-6 rounded-t-lg mb-6">
           <div className="flex items-center justify-center space-x-3">
             <User className="h-8 w-8" />
-            <h1 className="text-3xl font-bold text-center">Teacher Registration</h1>
+            <h1 className="text-3xl font-bold text-center">Student Registration</h1>
           </div>
           <p className="text-center text-cyan-100 mt-2">
             Please fill in all required fields to complete your registration
@@ -98,7 +74,7 @@ export default function SignupForm() {
                 <Lock className="h-5 w-5 mr-2 text-cyan-600" />
                 <h2 className="text-xl font-semibold text-cyan-800">Account Information</h2>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
                 <FormField
                   control={form.control}
                   name="email"
@@ -106,41 +82,12 @@ export default function SignupForm() {
                     <FormItem>
                       <FormLabel className="text-cyan-800">Email</FormLabel>
                       <FormControl>
-                        <Input placeholder="teacher@example.com" {...field} className="focus:ring-cyan-500" />
+                        <Input placeholder="student@example.com" {...field} className="focus:ring-cyan-500" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-cyan-800">Password</FormLabel>
-                      <FormControl>
-                        <Input type={showPassword ? "password" : "text"} placeholder="••••••••" {...field} className="focus:ring-cyan-500" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="confirmPassword"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-cyan-800">Confirm Password</FormLabel>
-                      <FormControl>
-                        <Input type={showPassword ? "password" : "text"} placeholder="••••••••" {...field} className="focus:ring-cyan-500" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="flex gap-2 items-center mt-5">
-                <Checkbox onClick={() => setShowPassword(!showPassword)} className="border-cyan-700" /> <p>{showPassword ? "Show Password" : "Hide Password"}</p>
               </div>
             </div>
 
@@ -185,19 +132,6 @@ export default function SignupForm() {
                       <FormLabel className="text-cyan-800">Mother's Name</FormLabel>
                       <FormControl>
                         <Input placeholder="Mother's name" {...field} className="focus:ring-cyan-500" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="teacherId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-cyan-800">Teacher ID</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Teacher ID" {...field} className="focus:ring-cyan-500" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -353,35 +287,137 @@ export default function SignupForm() {
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="nationality"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-cyan-800">Nationality</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Your nationality" {...field} className="focus:ring-cyan-500" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="religion"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-cyan-800">Religion</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Your religion" {...field} className="focus:ring-cyan-500" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
               </div>
             </div>
 
-            {/* Professional Information Section */}
+            {/* Academic Information Section */}
             <div className="bg-white p-6 rounded-lg shadow-sm border border-cyan-100">
               <div className="flex items-center mb-4">
-                <Briefcase className="h-5 w-5 mr-2 text-cyan-600" />
-                <h2 className="text-xl font-semibold text-cyan-800">Professional Information</h2>
+                <BookOpen className="h-5 w-5 mr-2 text-cyan-600" />
+                <h2 className="text-xl font-semibold text-cyan-800">Academic Information</h2>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
-                  name="designation"
+                  name="registrationNo"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-cyan-800">Designation</FormLabel>
+                      <FormLabel className="text-cyan-800">Registration No</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="Registration number"
+                          {...field}
+                          onChange={(e) => field.onChange(Number(e.target.value))}
+                          className="focus:ring-cyan-500"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="rollNo"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-cyan-800">Roll No</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="Roll number"
+                          {...field}
+                          onChange={(e) => field.onChange(Number(e.target.value))}
+                          className="focus:ring-cyan-500"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="startEducationYear"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-cyan-800">Start Education Year</FormLabel>
+                      <FormControl>
+                        <Input type="number" placeholder="Start Education Year" {...field}
+                          onChange={(e) => field.onChange(Number(e.target.value))} className="focus:ring-cyan-500" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="department" // ✅ Correct field name
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-cyan-800">Department</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger className="focus:ring-cyan-500 w-full">
-                            <SelectValue placeholder="Select designation" />
+                            <SelectValue placeholder="Select department" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="LECTURER">Lecturer</SelectItem>
-                          <SelectItem value="INSTRUCTOR">Instructor</SelectItem>
-                          <SelectItem value="SENIOR_INSTRUCTOR">Senior Instructor</SelectItem>
-                          <SelectItem value="HEAD_OF_DEPARTMENT">Head of Department</SelectItem>
-                          <SelectItem value="VICE_PRINCIPAL">Vice Principal</SelectItem>
-                          <SelectItem value="PRINCIPAL">Principal</SelectItem>
+                          <SelectItem value="ELECTRONIC">Electronic</SelectItem>
+                          <SelectItem value="ELECTROMADICAL">Electromedical</SelectItem>
+                          <SelectItem value="COMPUTER">Computer</SelectItem>
+                          <SelectItem value="POWER">Power</SelectItem>
+                          <SelectItem value="MECHANICAL">Mechanical</SelectItem>
+                          <SelectItem value="ELECTRICAL">Electrical</SelectItem>
+                          <SelectItem value="CIVIL">Civil</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="shift"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-cyan-800">Shift</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="focus:ring-cyan-500 w-full">
+                            <SelectValue placeholder="Select shift" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="MORNING">Morning</SelectItem>
+                          <SelectItem value="EVENING">Evening</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -390,12 +426,72 @@ export default function SignupForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="department"
+                  name="semester"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-cyan-800">Department</FormLabel>
+                      <FormLabel className="text-cyan-800">Semester</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="focus:ring-cyan-500 w-full">
+                            <SelectValue placeholder="Select semester" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="ONE">1st</SelectItem>
+                          <SelectItem value="TWO">2nd</SelectItem>
+                          <SelectItem value="THREE">3rd</SelectItem>
+                          <SelectItem value="FOUR">4th</SelectItem>
+                          <SelectItem value="FIVE">5th</SelectItem>
+                          <SelectItem value="SIX">6th</SelectItem>
+                          <SelectItem value="SEVEN">7th</SelectItem>
+                          <SelectItem value="EIGHT">8th</SelectItem>
+                          <SelectItem value="END">Completed</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="group"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-cyan-800">Group</FormLabel>
+                      <Select onValueChange={field.onChange}>
+                        <FormControl>
+                          <SelectTrigger className="focus:ring-cyan-500 w-full">
+                            <SelectValue placeholder="Select group" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="A_GROUP">A Group</SelectItem>
+                          <SelectItem value="B_GROUP">B Group</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+              </div>
+            </div>
+
+            {/* SSC Information Section */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-cyan-100">
+              <div className="flex items-center mb-4">
+                <BookOpen className="h-5 w-5 mr-2 text-cyan-600" />
+                <h2 className="text-xl font-semibold text-cyan-800">SSC (Class 10) Information</h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="classTenSchoolName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-cyan-800">School Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Department name" {...field} className="focus:ring-cyan-500" />
+                        <Input placeholder="School name" {...field} className="focus:ring-cyan-500" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -403,53 +499,12 @@ export default function SignupForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="joiningDate"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col ">
-                      <FormLabel className="text-cyan-800">Joining Date</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-full pl-3 text-left font-normal bg-white focus:ring-cyan-500",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "PPP")
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            disabled={(date) =>
-                              date > new Date() || date < new Date("1900-01-01")
-                            }
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="teachingSubject"
+                  name="classTenBoard"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-cyan-800">Teaching Subject</FormLabel>
+                      <FormLabel className="text-cyan-800">Board</FormLabel>
                       <FormControl>
-                        <Input placeholder="Subject name" {...field} className="focus:ring-cyan-500" />
+                        <Input placeholder="Education board" {...field} className="focus:ring-cyan-500" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -457,21 +512,72 @@ export default function SignupForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="trainingCompleted"
+                  name="classTenGroup"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 p-4">
+                    <FormItem>
+                      <FormLabel className="text-cyan-800">Group</FormLabel>
                       <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                          className="border-cyan-600 data-[state=checked]:bg-cyan-600"
+                        <Input placeholder="Group/Stream" {...field} className="focus:ring-cyan-500" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="classTenRollNo"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-cyan-800">Roll No</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Roll number" {...field} className="focus:ring-cyan-500" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="classTenRegistrationNo"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-cyan-800">Registration No</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Registration number" {...field} className="focus:ring-cyan-500" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="classTenGPA"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-cyan-800">GPA</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Your GPA" {...field} className="focus:ring-cyan-500" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="classTenExamYear"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-cyan-800">Exam Year</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="Exam year"
+                          {...field}
+                          onChange={(e) => field.onChange(Number(e.target.value))}
+                          className="focus:ring-cyan-500"
                         />
                       </FormControl>
-                      <div className="space-y-1 leading-none">
-                        <FormLabel className="text-cyan-800">
-                          Training Completed
-                        </FormLabel>
-                      </div>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -485,60 +591,6 @@ export default function SignupForm() {
                 <h2 className="text-xl font-semibold text-cyan-800">Documents & Additional Information</h2>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="nidNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-cyan-800">NID Number</FormLabel>
-                      <FormControl>
-                        <Input placeholder="National ID number" {...field} className="focus:ring-cyan-500" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="birthCertificateNo"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-cyan-800">Birth Certificate No</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Birth certificate number" {...field} className="focus:ring-cyan-500" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="nationality"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-cyan-800">Nationality</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Nationality" {...field} className="focus:ring-cyan-500" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="religion"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-cyan-800">Religion</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Religion" {...field} className="focus:ring-cyan-500" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-
                 <FormField
                   control={form.control}
                   name="photoUrl"
@@ -568,102 +620,9 @@ export default function SignupForm() {
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={form.control}
-                  name="signatureUrl"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-cyan-800">Signature</FormLabel>
-                      <FormControl>
-                        <div>
-                          <Input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleSignatureUpload}
-                            className="focus:ring-cyan-500"
-                          />
-                          {signaturePreview && (
-                            <div className="mt-2">
-                              <img
-                                src={signaturePreview}
-                                alt="Preview"
-                                className="h-20 w-20 object-cover rounded border border-cyan-200"
-                              />
-                            </div>
-                          )}
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <FormField
-                control={form.control}
-                name="maritalStatus"
-                render={({ field }) => (
-                  <FormItem className="space-y-3">
-                    <FormLabel className="text-cyan-800 mt-5">Marital Status</FormLabel>
-                    <FormControl>
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        className="md:flex  space-y-1"
-                      >
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="MARRIED" className="text-cyan-600 border-cyan-600" />
-                          </FormControl>
-                          <FormLabel className="font-normal text-cyan-800">Married</FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="UNMARRIED" className="text-cyan-600 border-cyan-600" />
-                          </FormControl>
-                          <FormLabel className="font-normal text-cyan-800">Unmarried</FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="DIVORCED" className="text-cyan-600 border-cyan-600" />
-                          </FormControl>
-                          <FormLabel className="font-normal text-cyan-800">Divorced</FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="WIDOWED" className="text-cyan-600 border-cyan-600" />
-                          </FormControl>
-                          <FormLabel className="font-normal text-cyan-800">Widowed</FormLabel>
-                        </FormItem>
-                      </RadioGroup>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
 
-            {/* Terms and Conditions */}
-            <FormField
-              control={form.control}
-              name="agreeToTerms"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 bg-white p-4 rounded-lg border border-cyan-100">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                      className="border-cyan-600 data-[state=checked]:bg-cyan-600"
-                    />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel className="text-cyan-800">
-                      I agree to the terms and conditions
-                    </FormLabel>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              </div>
+            </div>
 
             <Button
               type="submit"
@@ -674,13 +633,6 @@ export default function SignupForm() {
             </Button>
           </form>
         </Form>
-        {/* Footer Text */}
-        <p className="mt-6 text-center text-sm text-white">
-          Already have an account?{" "}
-          <Link href="/login" className="text-cyan-600 hover:text-cyan-800 font-medium">
-            Login
-          </Link>
-        </p>
       </div>
     </div>
   )

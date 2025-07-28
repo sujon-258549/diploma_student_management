@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const signUFormSchema = z.object({
+export const teacherSignup = z.object({
   // User fields
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
@@ -45,10 +45,6 @@ export const signUFormSchema = z.object({
   photoUrl: z.string().optional(),
   signatureUrl: z.string().optional(),
 
-//   // Terms agreement
-  agreeToTerms: z.boolean().refine(val => val, {
-    message: "You must agree to the terms and conditions",
-  }),
 }).refine(data => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],

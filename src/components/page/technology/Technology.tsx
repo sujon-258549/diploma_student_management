@@ -9,56 +9,56 @@ import { useEffect, useState } from "react";
 const Technology = () => {
   const departments = [
     {
-      id: "civil",
+      id: "CIVIL",
       name: "সিভিল টেকনোলজি",
       type: "বিভাগ পরিচিতি  ছাত্র তালিকা",
       Icon: Building2,
       gradient: "from-green-400 to-blue-500"
     },
     {
-      id: "electrical",
+      id: "ELECTRICAL",
       name: "ইলেকট্রিক্যাল টেকনোলজি",
       type: "বিভাগ পরিচিতি ছাত্র তালিকা",
       Icon: Zap,
       gradient: "from-yellow-400 to-red-500"
     },
     {
-      id: "mechanical",
+      id: "MECHANICAL",
       name: "মেকানিক্যাল টেকনোলজি",
       type: "বিভাগ পরিচিতি  ছাত্র তালিকা",
       Icon: Ear,
       gradient: "from-gray-600 to-gray-900"
     },
     {
-      id: "power",
+      id: "POWER",
       name: "পাওয়ার টেকনোলজি",
       type: "বিভাগ পরিচিতি  ছাত্র তালিকা",
       Icon: BatteryCharging,
       gradient: "from-indigo-500 to-purple-600"
     },
     {
-      id: "computer",
+      id: "COMPUTER",
       name: "কম্পিউটার সায়েন্স অ্যান্ড টেকনোলজি",
       type: "বিভাগ পরিচিতি  ছাত্র তালিকা",
       Icon: Laptop,
       gradient: "from-cyan-400 to-blue-600"
     },
     {
-      id: "electromadical",
+      id: "ELECTROMADICAL",
       name: "ইলেকট্রমেডিকেল টেকনোলজি",
       type: "বিভাগ পরিচিতি  ছাত্র তালিকা",
       Icon: HeartPulse,
       gradient: "from-pink-400 to-red-600"
     },
     {
-      id: "electronic",
+      id: "ELECTRONIC",
       name: "ইলেকট্রনিক্স টেকনোলজি",
       type: "বিভাগ পরিচিতি  ছাত্র তালিকা",
       Icon: Cpu,
       gradient: "from-purple-500 to-indigo-600"
     },
     {
-      id: "nontech",
+      id: "NONTECH",
       name: "নন-টেক বিভাগ",
       type: "বিভাগ পরিচিতি ্",
       Icon: BookOpen,

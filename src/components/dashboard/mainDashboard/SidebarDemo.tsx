@@ -21,8 +21,15 @@ export function SidebarDemo() {
       ),
     },
     {
-      label: "Profile",
-      href: "#",
+      label: "Create Teacher",
+      href: "/main_dashboard/create-teacher",
+      icon: (
+        <IconUserBolt className="h-6 w-6 shrink-0 text-white dark:text-neutral-200" />
+      ),
+    },
+    {
+      label: "Create Student",
+      href: "/main_dashboard/create-student",
       icon: (
         <IconUserBolt className="h-6 w-6 shrink-0 text-white dark:text-neutral-200" />
       ),

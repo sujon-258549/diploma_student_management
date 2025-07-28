@@ -1,11 +1,11 @@
 import React from 'react';
 
-const semesterPage = () => {
+const Student = () => {
     return (
         <div>
-            
+            Student List
         </div>
     );
 };
 
-export default semesterPage;
+export default Student;

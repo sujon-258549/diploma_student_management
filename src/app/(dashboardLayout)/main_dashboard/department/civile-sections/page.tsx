@@ -1,10 +1,10 @@
-import ComputerGroups from '@/components/page/computer/ComputerGroups';
+import Section from '@/components/page/computer/Section';
 import React from 'react';
 
 const page = () => {
     return (
         <div>
-           <ComputerGroups/> 
+            <Section/>
         </div>
     );
 };

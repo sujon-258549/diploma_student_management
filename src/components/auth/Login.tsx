@@ -139,13 +139,7 @@ const Login = () => {
               </form>
             </Form>
 
-            {/* Footer Text */}
-            <p className="mt-6 text-center text-sm text-white">
-              Don't have an account?{" "}
-              <Link href="/signup" className="text-cyan-600 hover:text-cyan-800 font-medium">
-                Sign Up
-              </Link>
-            </p>
+           
           </div>
         </motion.div>
       </div>

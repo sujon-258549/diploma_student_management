@@ -1,10 +1,12 @@
-import SignupForm from '@/components/auth/SignupForm';
+
+
+import StudentSignupForm from '@/components/Form/create-student/StudentSignupForm';
 import React from 'react';
 
 const SignUpPage = () => {
     return (
         <div>
-            <SignupForm/>
+            <StudentSignupForm/>
         </div>
     );
 };
