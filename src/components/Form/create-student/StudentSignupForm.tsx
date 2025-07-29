@@ -446,7 +446,7 @@ export default function StudentSignupForm() {
                           <SelectItem value="SEVEN">7th</SelectItem>
                           <SelectItem value="EIGHT">8th</SelectItem>
                           <SelectItem value="END">Completed</SelectItem>
-                        </SelectContent>
+                        </SelectContent> //registration
                       </Select>
                       <FormMessage />
                     </FormItem>

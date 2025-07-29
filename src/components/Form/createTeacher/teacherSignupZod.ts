@@ -31,7 +31,7 @@ export const teacherSignup = z.object({
   department: z.string().min(1, "Department is required"),
   joiningDate: z.date( "Joining date is required",),
   teachingSubject: z.string().optional(),
-  trainingCompleted: z.boolean(),
+  trainingCompleted: z.boolean().optional(),
 
 //   // Documents
   nidNumber: z.string().optional(),

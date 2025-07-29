@@ -1,6 +1,6 @@
 "use client"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form"
 import * as z from "zod"
 import { Button } from "@/components/ui/button"
 import {
@@ -28,22 +28,22 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CalendarIcon, User, Lock, Contact, Briefcase, FileText, Check } from "lucide-react"
 import { useState } from "react"
-import Link from "next/link"
 import { teacherSignup } from "./teacherSignupZod"
+import { toast } from "sonner"
+import { createTeacher } from "@/server/registration/registrationServices"
+import { useRouter } from "next/navigation"
 
 
 
 export default function TeacherSignupForm() {
+  const router = useRouter()
   const [photoPreview, setPhotoPreview] = useState("")
   const [signaturePreview, setSignaturePreview] = useState("")
   const form = useForm<z.infer<typeof teacherSignup>>({
     resolver: zodResolver(teacherSignup),
     defaultValues: {
-      // role: "FACULTY",
-      // trainingCompleted: false,
-      // needPasswordChange: true,
-      // agreeToTerms: false,
-    },
+      trainingCompleted: false
+    }
   })
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,8 +73,67 @@ export default function TeacherSignupForm() {
     }
   }
 
-  async function onSubmit(values: z.infer<typeof teacherSignup>) {
-    console.log(values)
+
+  const onSubmit: SubmitHandler<FieldValues> = async (values) => {
+    const toastId = toast.loading("Updating blog post...");
+    try {
+  
+          const updatedValues = {
+            ...values,
+            dateOfBirth: values.dateOfBirth
+              ? new Date(values.dateOfBirth).toISOString().split("T")[0]
+              : null,
+            joiningDate: values.joiningDate
+              ? new Date(values.joiningDate).toISOString().split("T")[0]
+              : null,
+            photoUrl: values.photoUrl || null,
+            signatureUrl: values.signatureUrl || null,
+            name: values.name,
+            email: values.email,
+            fatherName: values.fatherName,
+            motherName: values.motherName,
+            gender: values.gender,
+            role: "FACULTY",
+            bloodGroup: values.bloodGroup,
+            phoneNumber: values.phoneNumber,
+            emergencyContact: values.emergencyContact,
+            presentAddress: values.presentAddress,
+            permanentAddress: values.permanentAddress,
+            teacherId: values.teacherId,
+            status: values.status,
+            designation: values.designation,
+            department: values.department,
+            trainingCompleted: values.trainingCompleted,
+            teachingSubject: values.teachingSubject,
+            nidNumber: values.nidNumber,
+            birthCertificateNo: values.birthCertificateNo,
+            nationality: values.nationality,
+            religion: values.religion,
+            maritalStatus: values.maritalStatus,
+            group: values.group,
+            password: values.password
+          }
+     
+
+
+ 
+      console.log(updatedValues)
+      const result = await createTeacher(updatedValues)
+      console.log(result)
+      if (result?.success) {
+        toast.success(result.message || "Blog post updated successfully", {
+          id: toastId,
+        });
+        router.push("/");
+
+      } else {
+        toast.error(result?.message || "Failed to update blog post", {
+          id: toastId,
+        });
+      }
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
@@ -390,17 +449,31 @@ export default function TeacherSignupForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="department"
+                  name="department" // ✅ Correct field name
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-cyan-800">Department</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Department name" {...field} className="focus:ring-cyan-500" />
-                      </FormControl>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="focus:ring-cyan-500 w-full">
+                            <SelectValue placeholder="Select department" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="ELECTRONIC">Electronic</SelectItem>
+                          <SelectItem value="ELECTROMADICAL">Electromedical</SelectItem>
+                          <SelectItem value="COMPUTER">Computer</SelectItem>
+                          <SelectItem value="POWER">Power</SelectItem>
+                          <SelectItem value="MECHANICAL">Mechanical</SelectItem>
+                          <SelectItem value="ELECTRICAL">Electrical</SelectItem>
+                          <SelectItem value="CIVIL">Civil</SelectItem>
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
                   name="joiningDate"
@@ -652,7 +725,7 @@ export default function TeacherSignupForm() {
             </Button>
           </form>
         </Form>
-        
+
       </div>
     </div>
   )
