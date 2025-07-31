@@ -467,6 +467,7 @@ export default function TeacherSignupForm() {
                           <SelectItem value="MECHANICAL">Mechanical</SelectItem>
                           <SelectItem value="ELECTRICAL">Electrical</SelectItem>
                           <SelectItem value="CIVIL">Civil</SelectItem>
+                          <SelectItem value="NONE_TECH">NONE_TECH</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />

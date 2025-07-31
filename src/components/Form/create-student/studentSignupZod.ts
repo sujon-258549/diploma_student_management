@@ -27,9 +27,9 @@ export const studentSignUFormSchema = z.object({
   department: z.enum(["ELECTRONIC", "ELECTROMADICAL", "COMPUTER", "POWER", "MECHANICAL", "ELECTRICAL", "CIVIL"]),
 
   // //   // Documents
-  registrationNo: z.number().optional(),
+  registrationNo: z.string().optional(),
   startEducationYear: z.number().min(3, "Start Year is required"),
-  rollNo: z.number().optional(),
+  rollNo: z.string().optional(),
   // passingYear: z.number().optional(),
   // regularStudent: z.boolean().default(true),
   shift: z.enum(["MORNING", "EVENING"]),
@@ -46,7 +46,7 @@ export const studentSignUFormSchema = z.object({
   classTenGroup: z.string().min(1, "Permanent address is required"),
   classTenRollNo: z.string().min(1, "Permanent address is required"),
   classTenRegistrationNo: z.string().min(1, "Permanent address is required"),
-  classTenGPA: z.string().min(1, "Permanent address is required"),
-  classTenExamYear: z.number().min(1, "Permanent address is required"),
+  classTenGPA: z.string().min(1, "Permanent address is required").max(5),
+  classTenPassingYear: z.number().min(1, "Permanent address is required"),
 })
 

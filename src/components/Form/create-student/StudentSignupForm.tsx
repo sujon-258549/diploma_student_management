@@ -1,6 +1,6 @@
 "use client"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form"
 import * as z from "zod"
 import { Button } from "@/components/ui/button"
 import {
@@ -27,6 +27,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { CalendarIcon, User, Lock, Contact, BookOpen, FileText, Check } from "lucide-react"
 import { useState } from "react"
 import { studentSignUFormSchema } from "./studentSignupZod"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
+import { createStudent, createTeacher } from "@/server/registration/registrationServices"
 
 export default function StudentSignupForm() {
   const [photoPreview, setPhotoPreview] = useState("")
@@ -48,9 +51,42 @@ export default function StudentSignupForm() {
     }
   }
 
+  const router = useRouter()
+  const onSubmit: SubmitHandler<FieldValues> = async (values) => {
 
-  async function onSubmit(values: z.infer<typeof studentSignUFormSchema>) {
-    console.log(values, photo)
+    const toastId = toast.loading("Updating blog post...");
+    try {
+
+      const updatedValues = {
+        ...values,
+        dateOfBirth: values.dateOfBirth
+          ? new Date(values.dateOfBirth).toISOString().split("T")[0]
+          : null,
+
+        photoUrl: values.photoUrl || null,
+
+      }
+
+
+
+
+      console.log(updatedValues)
+      const result = await createStudent(updatedValues)
+      console.log(result)
+      if (result?.success) {
+        toast.success(result.message || "Student Create successfully", {
+          id: toastId,
+        });
+        router.push("/");
+
+      } else {
+        toast.error(result?.message || "Failed to student Create", {
+          id: toastId,
+        });
+      }
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
@@ -335,7 +371,6 @@ export default function StudentSignupForm() {
                           type="number"
                           placeholder="Registration number"
                           {...field}
-                          onChange={(e) => field.onChange(Number(e.target.value))}
                           className="focus:ring-cyan-500"
                         />
                       </FormControl>
@@ -351,10 +386,9 @@ export default function StudentSignupForm() {
                       <FormLabel className="text-cyan-800">Roll No</FormLabel>
                       <FormControl>
                         <Input
-                          type="number"
+
                           placeholder="Roll number"
                           {...field}
-                          onChange={(e) => field.onChange(Number(e.target.value))}
                           className="focus:ring-cyan-500"
                         />
                       </FormControl>
@@ -369,7 +403,7 @@ export default function StudentSignupForm() {
                     <FormItem>
                       <FormLabel className="text-cyan-800">Start Education Year</FormLabel>
                       <FormControl>
-                        <Input type="number" placeholder="Start Education Year" {...field}
+                        <Input placeholder="Start Education Year" {...field}
                           onChange={(e) => field.onChange(Number(e.target.value))} className="focus:ring-cyan-500" />
                       </FormControl>
                       <FormMessage />
@@ -564,7 +598,7 @@ export default function StudentSignupForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="classTenExamYear"
+                  name="classTenPassingYear"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-cyan-800">Exam Year</FormLabel>
