@@ -41,7 +41,7 @@ export function SidebarDemo() {
         <IconSettings className="h-6 w-6 shrink-0 text-white dark:text-neutral-200" />
       ),
     },
-    {
+    { //  link
       label: "Logout",
       href: "#",
       icon: (
