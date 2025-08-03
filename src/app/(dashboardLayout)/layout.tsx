@@ -17,4 +17,3 @@ const CommonLayout = ({ children }: { children: React.ReactNode }) => {
 export default CommonLayout;
 
 
-// department
