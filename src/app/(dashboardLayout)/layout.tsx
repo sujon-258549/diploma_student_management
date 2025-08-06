@@ -9,7 +9,7 @@ const CommonLayout = ({ children }: { children: React.ReactNode }) => {
       </div>
 
       {/* Content section with left margin to avoid overlap */}
-      <div className="p-4 w-full mt-10 lg:ml-[310px]">{children}</div>
+      <div className="p-4 w-full mt-10 lg:ml-[310px]">{children}</div>  //pas to children
     </div>
   );
 };
