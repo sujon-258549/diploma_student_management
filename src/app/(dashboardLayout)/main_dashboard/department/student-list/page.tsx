@@ -48,7 +48,7 @@ const StudentList = async ({
             {/* Main Content */}
             <div className="container mx-auto px-6 py-8 ">
                 <div className="bg-white rounded-lg  overflow-hidden">
-                    <Student students={data} />
+                    <Student students={data} subject='bangla' teacherId='f199e58a-04cc-4077-9ff7-136a7e8a5c55' />
                 </div>
             </div>
         </div>
