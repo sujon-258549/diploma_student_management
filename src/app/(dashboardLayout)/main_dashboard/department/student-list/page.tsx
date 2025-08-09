@@ -20,9 +20,9 @@ const StudentList = async ({
     const { data } = await studentData();
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50  rounded-md">
             {/* Professional Top Bar */}
-            <div className="bg-gradient-to-r from-cyan-600 to-blue-800 text-white shadow-lg">
+            <div className="rounded-t-md bg-gradient-to-r from-cyan-600 to-cyan-800 text-white shadow-lg">
                 <div className="container mx-auto px-6 py-4">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between">
                         <div>
@@ -46,8 +46,8 @@ const StudentList = async ({
             </div>
 
             {/* Main Content */}
-            <div className="container mx-auto px-6 py-8">
-                <div className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div className="container mx-auto px-6 py-8 ">
+                <div className="bg-white rounded-lg  overflow-hidden">
                     <Student students={data} />
                 </div>
             </div>
