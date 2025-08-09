@@ -69,7 +69,7 @@ const Technology = () => {
   const [technology, setTechnology] = useState<string>('')
   const router = useRouter()
   useEffect(() => {
-    if (technology === "computer") {
+    if (technology === "COMPUTER") {
       return router.push('/main_dashboard/department/computer-sections')
     }
   }, [technology])

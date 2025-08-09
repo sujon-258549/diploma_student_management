@@ -35,9 +35,10 @@ const SemesterList = () => {
     setSelectedGroup({ group: groupName, shift: shiftName });
   };
 
- const departmentName = "COMPUTER"
+  const departmentName = "COMPUTER"
   const groupName = selectedGroup?.group
   const shiftName = selectedGroup?.shift
+
   const semesterName = selectedSemester?.type
 
   console.log({ groupName, semesterName, shiftName })
@@ -124,7 +125,7 @@ const SemesterList = () => {
 
                 return (
                   <div className="w-full">
-                    <Link href={`/main_dashboard/department/computer-sections/student-list?semester=${semesterName}&group=${groupName}&shift=${shiftName}&${departmentName}`}>
+                    <Link href={`/main_dashboard/department/student-list?semester=${semesterName}&group=${groupName}&shift=${shiftName}&departmentName=${departmentName}`}>
 
                       <Card
                         onClick={() => handleSelectGroup(groupName, shiftName)}

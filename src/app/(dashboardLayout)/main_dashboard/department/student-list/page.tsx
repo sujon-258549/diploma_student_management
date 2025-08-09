@@ -1,5 +1,6 @@
 
 
+import { studentData } from '@/server/student/studentServices';
 import React from 'react';
 
 type PageProps = {
@@ -17,8 +18,10 @@ const StudentList = async ({
     searchParams: Promise<{ semester: string, group: string, shift: string, departmentName: string }>;
 }) => {
     const { semester, group, shift, departmentName } = await searchParams;
+    console.log(departmentName)
 
-
+const student = await studentData()
+console.log(student)
 
     return (
         <div className="p-6">
