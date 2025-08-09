@@ -1,5 +1,6 @@
 
 
+import Student from '@/components/page/studentAttendance/studentList/Student';
 import { studentData } from '@/server/student/studentServices';
 import React from 'react';
 
@@ -20,18 +21,18 @@ const StudentList = async ({
     const { semester, group, shift, departmentName } = await searchParams;
     console.log(departmentName)
 
-const student = await studentData()
-console.log(student)
-
+    const { data } = await studentData()
+console.log(data)
     return (
         <div className="p-6">
-            <h1 className="text-xl font-bold">Student List</h1>
+            {/* <h1 className="text-xl font-bold">Student List</h1>
             <p>Semester: {semester}</p>
             <p>Group: {group}</p>
             <p>Shift: {shift}</p>
-            <p>departmentName: {departmentName}</p>
+            <p>departmentName: {departmentName}</p> */}
+            <Student students={data} />
         </div>
     );
 };
 
-export default StudentList;
+export default StudentList;  
