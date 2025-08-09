@@ -131,7 +131,7 @@ const StudentList = ({ students, subject, teacherId }: StudentListProps) => {
       <div className="flex justify-end pt-6">
         <button 
           onClick={handleSubmit}
-          className="relative inline-flex items-center justify-center h-12 px-6 overflow-hidden font-medium text-white transition-all rounded-lg bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 shadow-lg hover:shadow-cyan-500/20 active:scale-95"
+          className="relative inline-flex cursor-pointer items-center justify-center h-12 px-6 overflow-hidden font-medium text-white transition-all rounded-lg bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 shadow-lg hover:shadow-cyan-500/20 active:scale-95"
         >
           Submit Attendance
           <FiSend className="ml-2" />
