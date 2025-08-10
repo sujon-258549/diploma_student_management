@@ -18,7 +18,7 @@ const Attendance: React.FC<AttendanceProps> = ({
     students
 }) => {
     return (
-        <div>
+        <div className="text-white">
             <h2>Attendance for {subject}</h2>
             <p>
                 <strong>Group:</strong> {group} | <strong>Semester:</strong> {semester} |{" "}
