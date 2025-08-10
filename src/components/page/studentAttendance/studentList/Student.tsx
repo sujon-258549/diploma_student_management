@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { FiSend } from 'react-icons/fi';
 import { createAttendance } from '@/server/attendance/attendanceServices';
+import { useRouter } from 'next/navigation';
 
 type Student = {
     id: string;
@@ -17,9 +18,22 @@ type StudentListProps = {
     students: Student[];
     subject: string;
     teacherId: string;
+    group: string
+    semester: string
+    departmentName: string
+    shift: string
 };
 
-const StudentList = ({ students, subject, teacherId }: StudentListProps) => {
+
+const StudentList = ({
+    students,
+    subject,
+    teacherId,
+    group,
+    semester,
+    departmentName,
+    shift
+}: StudentListProps) => {
     const [studentStatus, setStudentStatus] = useState<Record<string, boolean>>(
         students.reduce((acc, student) => ({
             ...acc,
@@ -33,7 +47,7 @@ const StudentList = ({ students, subject, teacherId }: StudentListProps) => {
             [studentId]: !prev[studentId]
         }));
     };
-
+    const router = useRouter()
     const handleSubmit = async () => {
         const { isConfirmed } = await Swal.fire({
             title: "Confirm Attendance Submission",
@@ -53,7 +67,11 @@ const StudentList = ({ students, subject, teacherId }: StudentListProps) => {
                     isAttended: studentStatus[student.id] || false
                 })),
                 subject,
-                teacherId
+                teacherId,
+                group,
+                semester,
+                departmentName,
+                shift
             };
 
             try {
@@ -61,14 +79,25 @@ const StudentList = ({ students, subject, teacherId }: StudentListProps) => {
                 console.log("Submitting attendance:", attendanceData);
                 const res = await createAttendance(attendanceData)
                 console.log(res)
+                if (res.success === false) {
+                    Swal.fire({
+                        title: "Error!",
+                        text: res.message || "Failed to record attendance. Please try again.",
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    });
 
-                Swal.fire({
-                    title: "Success!",
-                    text: "Attendance has been successfully recorded.",
-                    icon: "success",
-                    timer: 2000,
-                    showConfirmButton: false
-                });
+                } else {
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Attendance has been successfully recorded.",
+                        icon: "success",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    router.push(`/main_dashboard/department/student-list/attendance-student-data?subject=${subject}&group=${group}&semester=${semester}&departmentName=${departmentName}&shift=${shift}`);
+                }
+
             } catch (error) {
                 Swal.fire({
                     title: "Error!",

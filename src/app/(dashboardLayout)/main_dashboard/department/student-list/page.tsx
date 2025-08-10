@@ -2,14 +2,7 @@ import Student from '@/components/page/studentAttendance/studentList/Student';
 import { studentData } from '@/server/student/studentServices';
 import React from 'react';
 
-type PageProps = {
-    params: {
-        semesterName: string;
-        groupName: string;
-        shiftName: string;
-        departmentName: string;
-    };
-};
+
 
 const StudentList = async ({
     searchParams,
@@ -48,7 +41,15 @@ const StudentList = async ({
             {/* Main Content */}
             <div className="container mx-auto px-6 py-8 ">
                 <div className="bg-white rounded-lg  overflow-hidden">
-                    <Student students={data} subject='bangla' teacherId='f199e58a-04cc-4077-9ff7-136a7e8a5c55' />
+                    <Student
+                        students={data}
+                        subject='bangla'
+                        group={group}
+                        semester={semester}
+                        shift={shift}
+                        departmentName={departmentName}
+                        teacherId='b619a06d-fecc-4bbf-9b55-5fb5256c74b8'
+                    />
                 </div>
             </div>
         </div>
