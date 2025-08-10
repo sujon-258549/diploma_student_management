@@ -28,7 +28,7 @@ const Attendance: React.FC<AttendanceProps> = ({
             <h3>Student List</h3>
             <ul>
                 {students.map((student, index) => (
-                    <li key={index}>{student.name}</li>
+                    <li key={index}>{student.name} {student.rollNo}</li>
                 ))}
             </ul>
         </div>
