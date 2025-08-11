@@ -1,6 +1,8 @@
 import Student from '@/components/page/studentAttendance/studentList/Student';
 import { studentData } from '@/server/student/studentServices';
-import React from 'react';
+import Link from 'next/link';
+
+
 
 
 
@@ -11,7 +13,6 @@ const StudentList = async ({
 }) => {
     const { semester, group, shift, departmentName } = await searchParams;
     const { data } = await studentData();
-
     return (
         <div className="min-h-screen bg-gray-50  rounded-md">
             {/* Professional Top Bar */}
@@ -29,9 +30,14 @@ const StudentList = async ({
                                 <div className="bg-blue-500 px-3 py-1 rounded-full text-sm font-medium">
                                     {data?.length || 0} Students
                                 </div>
-                                <button className="bg-white text-blue-600 px-4 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors">
-                                    Export
-                                </button>
+                                <Link className=''
+                                    href={`student-list/attendance-student-data?semester=${semester}&group=${group}&shift=${shift}&departmentName=${departmentName}`}
+                                >
+                                    <button className="bg-white cursor-pointer text-blue-600 px-4 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors">
+                                        Export
+                                    </button>
+                                </Link>
+
                             </div>
                         </div>
                     </div>

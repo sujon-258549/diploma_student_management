@@ -1,5 +1,5 @@
 import Attendance from "@/components/page/studentAttendance/attendanseData/Attendance";
-import { studentData } from "@/server/student/studentServices";
+import { getAttendance } from "@/server/attendance/attendanceServices";
 
 const AttendanceStudentData = async ({ searchParams }: {
     searchParams: Promise<{
@@ -13,7 +13,9 @@ const AttendanceStudentData = async ({ searchParams }: {
     const { subject, group, semester, departmentName, shift } = await searchParams;
     console.log(subject, group, semester, departmentName, shift);
 
-    const { data } = await studentData();
+
+    const { data:studentAttendance } = await getAttendance();
+
 
     return (
         <div>
@@ -23,7 +25,7 @@ const AttendanceStudentData = async ({ searchParams }: {
                 semester={semester}
                 departmentName={departmentName}
                 shift={shift}
-                students={data}
+                studentAttendance={studentAttendance}
             />
         </div>
     );
