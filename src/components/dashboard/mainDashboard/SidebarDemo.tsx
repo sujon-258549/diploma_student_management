@@ -10,6 +10,7 @@ import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
 import Image from "next/image";
+import { MdSubject } from "react-icons/md";
 
 export function SidebarDemo() {
   const links = [
@@ -43,16 +44,9 @@ export function SidebarDemo() {
     },
     {
       label: "Subject Management",
-      href: "/main_dashboard/",
+      href: "/main_dashboard/subject-management",
       icon: (
-        <IconSettings className="h-6 w-6 shrink-0 text-white dark:text-neutral-200" />
-      ),
-    },
-    { //  link
-      label: "Logout",
-      href: "#",
-      icon: (
-        <IconArrowLeft className="h-6 w-6 shrink-0 text-white dark:text-neutral-200" />
+        <MdSubject className="h-6 w-6 shrink-0 text-white dark:text-neutral-200" />
       ),
     },
   ];
