@@ -5,12 +5,15 @@ import Swal from 'sweetalert2';
 import { FiSend } from 'react-icons/fi';
 import { createAttendance } from '@/server/attendance/attendanceServices';
 import { useRouter } from 'next/navigation';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Link from 'next/link';
 
 type Student = {
     id: string;
     name: string;
     department: string;
     rollNo: string;
+    photoUrl: string;
     status?: 'active' | 'inactive';
 };
 
@@ -122,8 +125,22 @@ const StudentList = ({
                     key={student.id}
                     className="grid grid-cols-12 items-center bg-cyan-700/90 hover:bg-cyan-700 p-3 rounded-lg shadow transition-colors"
                 >
-                    <div className="col-span-6 md:col-span-4 text-white truncate">
-                        {student.name}
+                    <div className="col-span-6 md:col-span-4 cursor-pointer text-white truncate">
+                        <Link href={`main_dashboard/department/student-list/${student.id}`}> <div className="flex items-center space-x-4">
+                            {student.photoUrl ? (
+                                <img
+                                    src={student.photoUrl}
+                                    alt={student.name}
+                                    className="w-12 h-12 rounded-full object-cover"
+                                />
+                            ) : (
+                                <Avatar>
+                                    <AvatarImage src="https://github.com/shadcn.png" />
+                                    <AvatarFallback>{student.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+                                </Avatar>
+                            )}
+                            <span className="font-medium">{student.name}</span>
+                        </div></Link>
                     </div>
                     <div className="col-span-3 md:col-span-2 text-white">
                         {student.rollNo}

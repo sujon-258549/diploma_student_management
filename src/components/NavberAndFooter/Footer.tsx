@@ -84,7 +84,7 @@ const Footer7 = ({
 }: Footer7Props) => {
     return (
         <section className="bg-cyan-900 text-white mt-10 md:mt-20">
-            <div className="container mx-auto px-5 pt-10 md:pt-20">
+            <div className="max-w-7xl mx-auto px-5 pt-10 md:pt-20">
                 <div className="flex w-full flex-col justify-between gap-10 lg:flex-row lg:items-start lg:text-left">
                     <div className="flex w-full flex-col justify-between gap-6 lg:items-start">
                         {/* Logo */}
