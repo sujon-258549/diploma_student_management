@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import {
-  IconArrowLeft,
   IconBrandTabler,
   IconSettings,
   IconUserBolt,
@@ -16,7 +15,7 @@ export function SidebarDemo() {
   const links = [
     {
       label: "Dashboard",
-      href: "#",
+      href: "/main_dashboard",
       icon: (
         <IconBrandTabler className="h-6 w-6 shrink-0 text-white dark:text-neutral-200" />
       ),
