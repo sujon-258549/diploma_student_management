@@ -7,7 +7,22 @@ import { createAttendance } from '@/server/attendance/attendanceServices';
 import { useRouter } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Link from 'next/link';
-
+import { BsThreeDotsVertical } from "react-icons/bs";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuPortal,
+    DropdownMenuSeparator,
+    DropdownMenuShortcut,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from '@/components/ui/button';
 type Student = {
     id: string;
     name: string;
@@ -43,7 +58,7 @@ const StudentList = ({
             [student.id]: student.status === 'inactive'
         }), {})
     );
-
+    const [buttonCart, setButtonCart] = useState<boolean>(false)
     const handleStatusChange = (studentId: string) => {
         setStudentStatus(prev => ({
             ...prev,
@@ -126,7 +141,38 @@ const StudentList = ({
                     className="grid grid-cols-12 items-center bg-cyan-700/90 hover:bg-cyan-700 p-3 rounded-lg shadow transition-colors"
                 >
                     <div className="col-span-6 md:col-span-4 cursor-pointer text-white truncate">
-                        <Link href={`main_dashboard/department/student-list/${student.id}`}> <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-4">
+
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="outline">  <BsThreeDotsVertical /></Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="w-56" align="start">
+                                    <DropdownMenuLabel className='text-cyan-800'>My Account</DropdownMenuLabel>
+                                    <DropdownMenuGroup>
+                                        <Link href={`/main_dashboard/department/student-list/student-profile/${student.id}`}>
+                                            <DropdownMenuItem>
+                                                <Button className='w-full'>  Profile</Button>
+                                            </DropdownMenuItem></Link>
+                                        <Link href={`/main_dashboard/department/student-list/student-informaction/${student.id}`}>
+                                            <DropdownMenuItem>
+                                                Student Information
+                                            </DropdownMenuItem>
+                                        </Link>
+                                        <DropdownMenuItem>
+                                            Settings
+                                            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            Keyboard shortcuts
+                                            <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuGroup>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+
+
+                            {/* </Link> */}
                             {student.photoUrl ? (
                                 <img
                                     src={student.photoUrl}
@@ -140,7 +186,7 @@ const StudentList = ({
                                 </Avatar>
                             )}
                             <span className="font-medium">{student.name}</span>
-                        </div></Link>
+                        </div>
                     </div>
                     <div className="col-span-3 md:col-span-2 text-white">
                         {student.rollNo}
