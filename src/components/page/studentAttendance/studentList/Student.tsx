@@ -58,6 +58,7 @@ const StudentList = ({
             [student.id]: student.status === 'inactive'
         }), {})
     );
+    console.log(group, semester, shift, departmentName)
     const [buttonCart, setButtonCart] = useState<boolean>(false)
     const handleStatusChange = (studentId: string) => {
         setStudentStatus(prev => ({

@@ -17,13 +17,29 @@ const AdminDashBoard = () => {
     { id: 8, name: 'Emily Clark', program: 'Business Administration', status: 'Active', progress: 91, grade: 'A+', attendance: '97%' },
   ];
 
+  const facultyData = [
+    { id: 1, name: 'Dr. James Miller', department: 'Computer Science', email: 'jmiller@poly.edu', courses: 4, status: 'Active' },
+    { id: 2, name: 'Prof. Susan Lee', department: 'Electrical Engineering', email: 'slee@poly.edu', courses: 3, status: 'Active' },
+    { id: 3, name: 'Dr. Robert Clark', department: 'Business Administration', email: 'rclark@poly.edu', courses: 2, status: 'On Leave' },
+    { id: 4, name: 'Prof. Alan Wright', department: 'Mathematics', email: 'awright@poly.edu', courses: 3, status: 'Active' },
+  ];
+
+  const courseData = [
+    { id: 1, name: 'Programming Fundamentals', code: 'CS101', instructor: 'Dr. James Miller', enrolled: 145, capacity: 150 },
+    { id: 2, name: 'Circuit Analysis', code: 'EE201', instructor: 'Prof. Susan Lee', enrolled: 98, capacity: 100 },
+    { id: 3, name: 'Business Ethics', code: 'BA301', instructor: 'Dr. Robert Clark', enrolled: 122, capacity: 130 },
+    { id: 4, name: 'Engineering Mathematics', code: 'MATH202', instructor: 'Prof. Alan Wright', enrolled: 167, capacity: 170 },
+  ];
+
   const statsData = {
     totalStudents: 1245,
     activeStudents: 1120,
     newEnrollments: 42,
     completionRate: '78%',
     femaleStudents: 580,
-    maleStudents: 665
+    maleStudents: 665,
+    totalFaculty: 48,
+    totalCourses: 86
   };
 
   const programsData = [
@@ -47,6 +63,38 @@ const AdminDashBoard = () => {
     { action: 'New report generated', details: 'Program completion report for Q3', time: '2 days ago', icon: 'chart-line', color: 'purple' },
     { action: 'Faculty meeting', details: 'Monthly faculty meeting completed', time: '3 days ago', icon: 'users', color: 'cyan' },
   ];
+
+  // Render content based on active tab
+  const renderTabContent = () => {
+    switch(activeTab) {
+      case 'overview':
+        return <OverviewTab 
+          statsData={statsData} 
+          programsData={programsData} 
+          studentData={studentData} 
+          upcomingEvents={upcomingEvents} 
+          recentActivities={recentActivities} 
+        />;
+      case 'students':
+        return <StudentsTab studentData={studentData} />;
+      case 'courses':
+        return <CoursesTab courseData={courseData} />;
+      case 'faculty':
+        return <FacultyTab facultyData={facultyData} />;
+      case 'reports':
+        return <ReportsTab statsData={statsData} programsData={programsData} />;
+      case 'settings':
+        return <SettingsTab />;
+      default:
+        return <OverviewTab 
+          statsData={statsData} 
+          programsData={programsData} 
+          studentData={studentData} 
+          upcomingEvents={upcomingEvents} 
+          recentActivities={recentActivities} 
+        />;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -78,7 +126,7 @@ const AdminDashBoard = () => {
               />
             </div>
             <button className="bg-cyan-500 hover:bg-cyan-600 text-white py-2 px-4 rounded-lg flex items-center">
-              <i className="fas fa-plus mr-2"></i> New Student
+              <i className="fas fa-plus mr-2"></i> {activeTab === 'students' ? 'New Student' : activeTab === 'faculty' ? 'New Faculty' : 'New'}
             </button>
             <div className="relative">
               <button className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
@@ -116,275 +164,658 @@ const AdminDashBoard = () => {
 
       {/* Main Content */}
       <main className="p-6">
-        {/* Stats Overview */}
+        {renderTabContent()}
+      </main>
+    </div>
+  );
+};
+
+// Tab Components
+const OverviewTab = ({ statsData, programsData, studentData, upcomingEvents, recentActivities } : any) => {
+  return (
+    <>
+      {/* Stats Overview */}
+      <motion.div 
+        className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+      >
+        <StatCard 
+          title="Total Students" 
+          value={statsData.totalStudents} 
+          icon="users" 
+          color="cyan" 
+          change="+5% from last month" 
+        />
+        <StatCard 
+          title="Active Students" 
+          value={statsData.activeStudents} 
+          icon="user-check" 
+          color="green" 
+          change="+3% from last month" 
+        />
+        <StatCard 
+          title="New Enrollments" 
+          value={statsData.newEnrollments} 
+          icon="user-plus" 
+          color="blue" 
+          change="+12% from last month" 
+        />
+        <StatCard 
+          title="Completion Rate" 
+          value={statsData.completionRate} 
+          icon="graduation-cap" 
+          color="purple" 
+          change="+2% from last month" 
+        />
+      </motion.div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        {/* Student Gender Distribution */}
         <motion.div 
-          className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
+          className="bg-white rounded-xl shadow-sm p-5"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
         >
-          <StatCard 
-            title="Total Students" 
-            value={statsData.totalStudents} 
-            icon="users" 
-            color="cyan" 
-            change="+5% from last month" 
-          />
-          <StatCard 
-            title="Active Students" 
-            value={statsData.activeStudents} 
-            icon="user-check" 
-            color="green" 
-            change="+3% from last month" 
-          />
-          <StatCard 
-            title="New Enrollments" 
-            value={statsData.newEnrollments} 
-            icon="user-plus" 
-            color="blue" 
-            change="+12% from last month" 
-          />
-          <StatCard 
-            title="Completion Rate" 
-            value={statsData.completionRate} 
-            icon="graduation-cap" 
-            color="purple" 
-            change="+2% from last month" 
-          />
+          <h3 className="text-lg font-semibold text-slate-800 mb-4">Student Gender Distribution</h3>
+          <div className="flex items-center justify-center">
+            <div className="relative w-40 h-40">
+              <svg viewBox="0 0 100 100" className="w-full h-full">
+                <circle cx="50" cy="50" r="45" fill="#f1f5f9" />
+                <motion.circle 
+                  cx="50" cy="50" r="45" fill="transparent"
+                  stroke="#0ea5e9" 
+                  strokeWidth="10"
+                  strokeDasharray="283 283"
+                  strokeDashoffset={283 - (283 * statsData.maleStudents) / statsData.totalStudents}
+                  initial={{ strokeDashoffset: 283 }}
+                  animate={{ strokeDashoffset: 283 - (283 * statsData.maleStudents) / statsData.totalStudents }}
+                  transition={{ delay: 0.5, duration: 1 }}
+                />
+                <motion.circle 
+                  cx="50" cy="50" r="45" fill="transparent"
+                  stroke="#ec4899" 
+                  strokeWidth="10"
+                  strokeDasharray="283 283"
+                  strokeDashoffset={283 - (283 * statsData.femaleStudents) / statsData.totalStudents + 20}
+                  initial={{ strokeDashoffset: 283 + 20 }}
+                  animate={{ strokeDashoffset: 283 - (283 * statsData.femaleStudents) / statsData.totalStudents + 20 }}
+                  transition={{ delay: 0.5, duration: 1 }}
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-lg font-semibold text-slate-700">Total</span>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-center mt-4 space-x-8">
+            <div className="flex items-center">
+              <div className="w-4 h-4 bg-cyan-500 rounded mr-2"></div>
+              <span className="text-sm text-slate-600">Male: {statsData.maleStudents}</span>
+            </div>
+            <div className="flex items-center">
+              <div className="w-4 h-4 bg-pink-500 rounded mr-2"></div>
+              <span className="text-sm text-slate-600">Female: {statsData.femaleStudents}</span>
+            </div>
+          </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          {/* Student Gender Distribution */}
+        {/* Program Distribution */}
+        <motion.div 
+          className="bg-white rounded-xl shadow-sm p-5 lg:col-span-2"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          <h3 className="text-lg font-semibold text-slate-800 mb-4">Program Distribution</h3>
+          <div className="space-y-4">
+            {programsData.map((program : any, index : number) => (
+              <div key={index} className="mb-4">
+                <div className="flex justify-between mb-1">
+                  <span className="text-sm font-medium text-slate-700">{program.name}</span>
+                  <span className="text-sm font-medium text-slate-700">{program.enrollment} students</span>
+                </div>
+                <div className="w-full bg-slate-200 rounded-full h-2.5">
+                  <motion.div 
+                    className="h-2.5 rounded-full" 
+                    style={{ backgroundColor: program.color }}
+                    initial={{ width: 0 }}
+                    animate={{ width: `${(program.enrollment / 500) * 100}%` }}
+                    transition={{ delay: 0.6 + index * 0.1, duration: 1 }}
+                  ></motion.div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Student Table */}
+        <motion.div 
+          className="bg-white rounded-xl shadow-sm lg:col-span-2"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+        >
+          <div className="px-6 py-5 border-b border-slate-200 flex justify-between items-center">
+            <h3 className="text-lg font-semibold text-slate-800">Recent Students</h3>
+            <button className="text-cyan-500 text-sm font-medium">View All</button>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-slate-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Name</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Program</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Status</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Progress</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200">
+                {studentData.slice(0, 5).map((student: any, index: number) => (
+                  <motion.tr 
+                    key={student.id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.1 * index }}
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="flex-shrink-0 h-10 w-10">
+                          <div className="h-10 w-10 rounded-full bg-cyan-100 flex items-center justify-center">
+                            <span className="text-cyan-600 font-medium">
+                              {student.name.split(' ').map((n : any)=> n[0]).join('')}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="ml-4">
+                          <div className="text-sm font-medium text-slate-900">{student.name}</div>
+                          <div className="text-sm text-slate-500">ID: {student.id}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                      {student.program}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                        ${student.status === 'Active' ? 'bg-green-100 text-green-800' : 
+                          student.status === 'Probation' ? 'bg-yellow-100 text-yellow-800' : 
+                          'bg-red-100 text-red-800'}`}>
+                        {student.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="w-full bg-slate-200 rounded-full h-2.5">
+                        <div 
+                          className="bg-cyan-600 h-2.5 rounded-full" 
+                          style={{ width: `${student.progress}%` }}
+                        ></div>
+                      </div>
+                      <div className="text-xs text-slate-500 mt-1">{student.progress}% complete</div>
+                    </td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </motion.div>
+
+        {/* Right Column */}
+        <div className="space-y-6">
+          {/* Upcoming Events */}
+          <motion.div 
+            className="bg-white rounded-xl shadow-sm p-5"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+          >
+            <h3 className="text-lg font-semibold text-slate-800 mb-4">Upcoming Events</h3>
+            <div className="space-y-4">
+              {upcomingEvents.map((event : any, index: number) => (
+                <motion.div 
+                  key={index}
+                  className="border-l-4 border-cyan-500 pl-4 py-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.7 + index * 0.1 }}
+                >
+                  <h4 className="text-sm font-medium text-slate-800">{event.title}</h4>
+                  <div className="flex items-center text-xs text-slate-500 mt-1">
+                    <i className="far fa-calendar-alt mr-2"></i>
+                    <span>{event.date} • {event.time}</span>
+                  </div>
+                  <div className="flex items-center text-xs text-slate-500 mt-1">
+                    <i className="far fa-map-marker-alt mr-2"></i>
+                    <span>{event.location}</span>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Recent Activity */}
           <motion.div 
             className="bg-white rounded-xl shadow-sm p-5"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.8, duration: 0.5 }}
           >
-            <h3 className="text-lg font-semibold text-slate-800 mb-4">Student Gender Distribution</h3>
-            <div className="flex items-center justify-center">
-              <div className="relative w-40 h-40">
-                <svg viewBox="0 0 100 100" className="w-full h-full">
-                  <circle cx="50" cy="50" r="45" fill="#f1f5f9" />
-                  <motion.circle 
-                    cx="50" cy="50" r="45" fill="transparent"
-                    stroke="#0ea5e9" 
-                    strokeWidth="10"
-                    strokeDasharray="283 283"
-                    strokeDashoffset={283 - (283 * statsData.maleStudents) / statsData.totalStudents}
-                    initial={{ strokeDashoffset: 283 }}
-                    animate={{ strokeDashoffset: 283 - (283 * statsData.maleStudents) / statsData.totalStudents }}
-                    transition={{ delay: 0.5, duration: 1 }}
-                  />
-                  <motion.circle 
-                    cx="50" cy="50" r="45" fill="transparent"
-                    stroke="#ec4899" 
-                    strokeWidth="10"
-                    strokeDasharray="283 283"
-                    strokeDashoffset={283 - (283 * statsData.femaleStudents) / statsData.totalStudents + 20}
-                    initial={{ strokeDashoffset: 283 + 20 }}
-                    animate={{ strokeDashoffset: 283 - (283 * statsData.femaleStudents) / statsData.totalStudents + 20 }}
-                    transition={{ delay: 0.5, duration: 1 }}
-                  />
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-lg font-semibold text-slate-700">Total</span>
-                </div>
-              </div>
-            </div>
-            <div className="flex justify-center mt-4 space-x-8">
-              <div className="flex items-center">
-                <div className="w-4 h-4 bg-cyan-500 rounded mr-2"></div>
-                <span className="text-sm text-slate-600">Male: {statsData.maleStudents}</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-4 h-4 bg-pink-500 rounded mr-2"></div>
-                <span className="text-sm text-slate-600">Female: {statsData.femaleStudents}</span>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Program Distribution */}
-          <motion.div 
-            className="bg-white rounded-xl shadow-sm p-5 lg:col-span-2"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <h3 className="text-lg font-semibold text-slate-800 mb-4">Program Distribution</h3>
+            <h3 className="text-lg font-semibold text-slate-800 mb-4">Recent Activity</h3>
             <div className="space-y-4">
-              {programsData.map((program, index) => (
-                <div key={index} className="mb-4">
-                  <div className="flex justify-between mb-1">
-                    <span className="text-sm font-medium text-slate-700">{program.name}</span>
-                    <span className="text-sm font-medium text-slate-700">{program.enrollment} students</span>
+              {recentActivities.map(( activity: any, index: number) => (
+                <motion.div 
+                  key={index}
+                  className="flex items-start"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.9 + index * 0.1 }}
+                >
+                  <div className={`bg-${activity.color}-100 rounded-full p-2 mr-3`}>
+                    <i className={`fas fa-${activity.icon} text-${activity.color}-600`}></i>
                   </div>
-                  <div className="w-full bg-slate-200 rounded-full h-2.5">
-                    <motion.div 
-                      className="h-2.5 rounded-full" 
-                      style={{ backgroundColor: program.color }}
-                      initial={{ width: 0 }}
-                      animate={{ width: `${(program.enrollment / 500) * 100}%` }}
-                      transition={{ delay: 0.6 + index * 0.1, duration: 1 }}
-                    ></motion.div>
+                  <div>
+                    <p className="text-sm font-medium text-slate-800">{activity.action}</p>
+                    <p className="text-sm text-slate-500">{activity.details}</p>
+                    <p className="text-xs text-slate-400 mt-1">{activity.time}</p>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </motion.div>
         </div>
+      </div>
+    </>
+  );
+};
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Student Table */}
-          <motion.div 
-            className="bg-white rounded-xl shadow-sm lg:col-span-2"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
-          >
-            <div className="px-6 py-5 border-b border-slate-200 flex justify-between items-center">
-              <h3 className="text-lg font-semibold text-slate-800">Student List</h3>
-              <button className="text-cyan-500 text-sm font-medium">View All</button>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-slate-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Name</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Program</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Progress</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Grade</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-200">
-                  {studentData.map((student, index) => (
-                    <motion.tr 
-                      key={student.id}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.1 * index }}
-                    >
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <div className="flex-shrink-0 h-10 w-10">
-                            <div className="h-10 w-10 rounded-full bg-cyan-100 flex items-center justify-center">
-                              <span className="text-cyan-600 font-medium">
-                                {student.name.split(' ').map(n => n[0]).join('')}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="ml-4">
-                            <div className="text-sm font-medium text-slate-900">{student.name}</div>
-                            <div className="text-sm text-slate-500">ID: {student.id}</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
-                        {student.program}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                          ${student.status === 'Active' ? 'bg-green-100 text-green-800' : 
-                            student.status === 'Probation' ? 'bg-yellow-100 text-yellow-800' : 
-                            'bg-red-100 text-red-800'}`}>
-                          {student.status}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="w-full bg-slate-200 rounded-full h-2.5">
-                          <div 
-                            className="bg-cyan-600 h-2.5 rounded-full" 
-                            style={{ width: `${student.progress}%` }}
-                          ></div>
-                        </div>
-                        <div className="text-xs text-slate-500 mt-1">{student.progress}% complete</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-500">
-                        {student.grade}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <button className="text-cyan-600 hover:text-cyan-900 mr-3">
-                          <i className="fas fa-edit"></i>
-                        </button>
-                        <button className="text-red-600 hover:text-red-900">
-                          <i className="fas fa-trash"></i>
-                        </button>
-                      </td>
-                    </motion.tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </motion.div>
-
-          {/* Right Column */}
-          <div className="space-y-6">
-            {/* Upcoming Events */}
-            <motion.div 
-              className="bg-white rounded-xl shadow-sm p-5"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-            >
-              <h3 className="text-lg font-semibold text-slate-800 mb-4">Upcoming Events</h3>
-              <div className="space-y-4">
-                {upcomingEvents.map((event, index) => (
-                  <motion.div 
-                    key={index}
-                    className="border-l-4 border-cyan-500 pl-4 py-2"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.7 + index * 0.1 }}
-                  >
-                    <h4 className="text-sm font-medium text-slate-800">{event.title}</h4>
-                    <div className="flex items-center text-xs text-slate-500 mt-1">
-                      <i className="far fa-calendar-alt mr-2"></i>
-                      <span>{event.date} • {event.time}</span>
-                    </div>
-                    <div className="flex items-center text-xs text-slate-500 mt-1">
-                      <i className="far fa-map-marker-alt mr-2"></i>
-                      <span>{event.location}</span>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Recent Activity */}
-            <motion.div 
-              className="bg-white rounded-xl shadow-sm p-5"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.5 }}
-            >
-              <h3 className="text-lg font-semibold text-slate-800 mb-4">Recent Activity</h3>
-              <div className="space-y-4">
-                {recentActivities.map((activity, index) => (
-                  <motion.div 
-                    key={index}
-                    className="flex items-start"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.9 + index * 0.1 }}
-                  >
-                    <div className={`bg-${activity.color}-100 rounded-full p-2 mr-3`}>
-                      <i className={`fas fa-${activity.icon} text-${activity.color}-600`}></i>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-slate-800">{activity.action}</p>
-                      <p className="text-sm text-slate-500">{activity.details}</p>
-                      <p className="text-xs text-slate-400 mt-1">{activity.time}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
+const StudentsTab = ({ studentData }: any) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="bg-white rounded-xl shadow-sm">
+        <div className="px-6 py-5 border-b border-slate-200 flex justify-between items-center">
+          <h3 className="text-lg font-semibold text-slate-800">Student Management</h3>
+          <div className="flex space-x-2">
+            <button className="bg-cyan-500 hover:bg-cyan-600 text-white py-2 px-4 rounded-lg flex items-center">
+              <i className="fas fa-plus mr-2"></i> New Student
+            </button>
+            <button className="border border-slate-200 hover:bg-slate-100 py-2 px-4 rounded-lg flex items-center">
+              <i className="fas fa-filter mr-2"></i> Filter
+            </button>
           </div>
         </div>
-      </main>
-    </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-slate-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Program</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Progress</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Grade</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Attendance</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-200">
+              {studentData.map((student : any, index: number) => (
+                <motion.tr 
+                  key={student.id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.05 * index }}
+                >
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0 h-10 w-10">
+                        <div className="h-10 w-10 rounded-full bg-cyan-100 flex items-center justify-center">
+                          <span className="text-cyan-600 font-medium">
+                            {student.name.split(' ').map((n : any) => n[0]).join('')}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="ml-4">
+                        <div className="text-sm font-medium text-slate-900">{student.name}</div>
+                        <div className="text-sm text-slate-500">ID: {student.id}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                    {student.program}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                      ${student.status === 'Active' ? 'bg-green-100 text-green-800' : 
+                        student.status === 'Probation' ? 'bg-yellow-100 text-yellow-800' : 
+                        'bg-red-100 text-red-800'}`}>
+                      {student.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="w-full bg-slate-200 rounded-full h-2.5">
+                      <div 
+                        className="bg-cyan-600 h-2.5 rounded-full" 
+                        style={{ width: `${student.progress}%` }}
+                      ></div>
+                    </div>
+                    <div className="text-xs text-slate-500 mt-1">{student.progress}% complete</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-500">
+                    {student.grade}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-500">
+                    {student.attendance}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button className="text-cyan-600 hover:text-cyan-900 mr-3">
+                      <i className="fas fa-edit"></i>
+                    </button>
+                    <button className="text-red-600 hover:text-red-900">
+                      <i className="fas fa-trash"></i>
+                    </button>
+                  </td>
+                </motion.tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+const CoursesTab = ({ courseData }: any) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="bg-white rounded-xl shadow-sm">
+        <div className="px-6 py-5 border-b border-slate-200 flex justify-between items-center">
+          <h3 className="text-lg font-semibold text-slate-800">Course Management</h3>
+          <button className="bg-cyan-500 hover:bg-cyan-600 text-white py-2 px-4 rounded-lg flex items-center">
+            <i className="fas fa-plus mr-2"></i> New Course
+          </button>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-slate-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Course Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Code</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Instructor</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Enrollment</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Capacity</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-200">
+              {courseData.map((course : any, index : number) => (
+                <motion.tr 
+                  key={course.id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.1 * index }}
+                >
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm font-medium text-slate-900">{course.name}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                    {course.code}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                    {course.instructor}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                    {course.enrolled}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                    {course.capacity}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                      ${course.enrolled < course.capacity ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                      {course.enrolled < course.capacity ? 'Available' : 'Full'}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button className="text-cyan-600 hover:text-cyan-900 mr-3">
+                      <i className="fas fa-edit"></i>
+                    </button>
+                    <button className="text-red-600 hover:text-red-900">
+                      <i className="fas fa-trash"></i>
+                    </button>
+                  </td>
+                </motion.tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+const FacultyTab = ({ facultyData }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="bg-white rounded-xl shadow-sm">
+        <div className="px-6 py-5 border-b border-slate-200 flex justify-between items-center">
+          <h3 className="text-lg font-semibold text-slate-800">Faculty Management</h3>
+          <button className="bg-cyan-500 hover:bg-cyan-600 text-white py-2 px-4 rounded-lg flex items-center">
+            <i className="fas fa-plus mr-2"></i> New Faculty
+          </button>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-slate-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Department</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Email</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Courses</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-200">
+              {facultyData.map((faculty, index) => (
+                <motion.tr 
+                  key={faculty.id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.1 * index }}
+                >
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0 h-10 w-10">
+                        <div className="h-10 w-10 rounded-full bg-cyan-100 flex items-center justify-center">
+                          <span className="text-cyan-600 font-medium">
+                            {faculty.name.split(' ').map(n => n[0]).join('')}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="ml-4">
+                        <div className="text-sm font-medium text-slate-900">{faculty.name}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                    {faculty.department}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                    {faculty.email}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                    {faculty.courses}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                      ${faculty.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                      {faculty.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button className="text-cyan-600 hover:text-cyan-900 mr-3">
+                      <i className="fas fa-edit"></i>
+                    </button>
+                    <button className="text-red-600 hover:text-red-900">
+                      <i className="fas fa-trash"></i>
+                    </button>
+                  </td>
+                </motion.tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+const ReportsTab = ({ statsData, programsData }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="space-y-6"
+    >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-white rounded-xl shadow-sm p-5">
+          <h3 className="text-lg font-semibold text-slate-800 mb-4">Student Statistics</h3>
+          <div className="space-y-4">
+            <div className="flex justify-between">
+              <span className="text-sm text-slate-600">Total Students</span>
+              <span className="text-sm font-medium text-slate-800">{statsData.totalStudents}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-slate-600">Active Students</span>
+              <span className="text-sm font-medium text-slate-800">{statsData.activeStudents}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-slate-600">New Enrollments</span>
+              <span className="text-sm font-medium text-slate-800">{statsData.newEnrollments}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-slate-600">Completion Rate</span>
+              <span className="text-sm font-medium text-slate-800">{statsData.completionRate}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-white rounded-xl shadow-sm p-5">
+          <h3 className="text-lg font-semibold text-slate-800 mb-4">Program Statistics</h3>
+          <div className="space-y-4">
+            {programsData.map((program, index) => (
+              <div key={index} className="flex justify-between">
+                <span className="text-sm text-slate-600">{program.name}</span>
+                <span className="text-sm font-medium text-slate-800">{program.enrollment} students</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      
+      <div className="bg-white rounded-xl shadow-sm p-5">
+        <h3 className="text-lg font-semibold text-slate-800 mb-4">Generate Reports</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <button className="bg-cyan-500 hover:bg-cyan-600 text-white py-3 px-4 rounded-lg flex flex-col items-center">
+            <i className="fas fa-user-graduate text-2xl mb-2"></i>
+            <span>Student Report</span>
+          </button>
+          <button className="bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-lg flex flex-col items-center">
+            <i className="fas fa-chart-bar text-2xl mb-2"></i>
+            <span>Performance Report</span>
+          </button>
+          <button className="bg-purple-500 hover:bg-purple-600 text-white py-3 px-4 rounded-lg flex flex-col items-center">
+            <i className="fas fa-file-invoice text-2xl mb-2"></i>
+            <span>Financial Report</span>
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+const SettingsTab = () => {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="bg-white rounded-xl shadow-sm p-6"
+    >
+      <h3 className="text-lg font-semibold text-slate-800 mb-6">Institute Settings</h3>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h4 className="text-md font-medium text-slate-700 mb-4">General Settings</h4>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-slate-600">Institute Name</span>
+              <span className="text-sm font-medium text-slate-800">Polytechnic Institute</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-slate-600">Academic Year</span>
+              <span className="text-sm font-medium text-slate-800">2023-2024</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-slate-600">Semester</span>
+              <span className="text-sm font-medium text-slate-800">Fall 2023</span>
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <h4 className="text-md font-medium text-slate-700 mb-4">System Settings</h4>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-slate-600">Theme</span>
+              <select className="text-sm border border-slate-200 rounded px-3 py-1">
+                <option>Light</option>
+                <option>Dark</option>
+                <option>Auto</option>
+              </select>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-slate-600">Language</span>
+              <select className="text-sm border border-slate-200 rounded px-3 py-1">
+                <option>English</option>
+                <option>Spanish</option>
+                <option>French</option>
+              </select>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-slate-600">Notifications</span>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" className="sr-only peer" defaultChecked />
+                <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyan-500"></div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="mt-8 flex justify-end">
+        <button className="bg-cyan-500 hover:bg-cyan-600 text-white py-2 px-6 rounded-lg">
+          Save Changes
+        </button>
+      </div>
+    </motion.div>
   );
 };
 

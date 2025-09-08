@@ -1,3 +1,5 @@
+
+
 const Hero = () => {
   return (
     <section className="relative w-full h-screen md:max-h-[600px] max-h-[700px] flex items-center bg-gradient-to-b from-black/100 via-black/100 to-black/80 overflow-hidden">
